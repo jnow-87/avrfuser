@@ -1,0 +1,32 @@
+/* output declarations */
+%struct-type
+%omit-struct-type
+%readonly-tables
+%global-table
+%includes
+%language=C++
+
+/* delimiter */
+%delimiters=","
+
+/* naming */
+%define slot-name name
+%define hash-function-name hash
+%define lookup-function-name lookup
+%define class-name mcu_config
+
+
+/* c-code */
+%{
+	#include <fuse.h>
+	#include <mcu.h>
+%}
+
+/* struct-type definition */
+struct mcu_config_t;
+
+
+%%
+# mcu			low byte			high byte			extended byte
+atmega1284p,	atmega1284p_low,	atmega1284p_high,	atmega1284p_ext
+%%
