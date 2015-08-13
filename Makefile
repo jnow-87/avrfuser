@@ -4,38 +4,26 @@
 
 # init source and built tree
 default_built_tree := built/
-src_dirs := example
+src_dirs := main/
 
 # init build system variables
 project_type := cxx
-config := ./config
-config_tree := scripts/config
-mconfig := scripts/mconf/mconfig
-mconfig_ftype := Pconfig
 
 # include build system Makefile
 include scripts/Makefile.inc
 
 # init default flags
-cflags := $(CFLAGS) $(CONFIG_CFLAGS)
-cxxflags := $(CXXFLAGS) $(CONFIG_CXXFLAGS)
-cppflags := $(CPPFLAGS) $(CONFIG_CPPFLAGS)
-ldflags := $(LDFLAGS) $(CONFIG_LDFLAGS)
-ldrflags := $(LDRFLAGS) $(CONFIG_LDRFLAGS)
-asflags := $(ASFLAGS) $(CONFIG_ASFLAGS)
-archflags := $(ARCHFLAGS) $(CONFIG_ARCHFLAGS)
+cflags := $(CFLAGS)
+cxxflags := $(CXXFLAGS)
+cppflags := $(CPPFLAGS) -I"include/" -Wall -O2
+ldflags := $(LDFLAGS)
+ldrflags := $(LDRFLAGS)
+asflags := $(ASFLAGS)
+archflags := $(ARCHFLAGS)
 
-hostcflags := $(HOSTCFLAGS) $(CONFIG_HOSTCFLAGS)
-hostcxxflags := $(HOSTCXXFLAGS) $(CONFIG_HOSTCCCFLAGS)
-hostcppflags := $(HOSTCPPFLAGS) $(CONFIG_HOSTCPPFLAGS)
-hostldflags := $(HOSTLDFLAGS) $(CONFIG_HOSTLDFLAGS)
-hostldrflags := $(HOSTLDRFLAGS) $(CONFIG_HOSTLDRFLAGS)
-hostasflags := $(HOSTASFLAGS) $(CONFIG_HOSTASFLAGS)
-hostarchflags := $(HOSTARCHFLAGS) $(CONFIG_HOSTARCHFLAGS)
-
-yaccflags := $(YACCFLAGS) $(CONFIG_YACCFLAGS)
-lexflags := $(LEXFLAGS) $(CONFIG_LEXFLAGS)
-gperfflags := $(GPERFFLAGS) $(CONFIG_GPERFFLAGS)
+yaccflags := $(YACCFLAGS)
+lexflags := $(LEXFLAGS)
+gperfflags := $(GPERFFLAGS)
 
 ###################
 ###   targets   ###
@@ -45,15 +33,12 @@ gperfflags := $(GPERFFLAGS) $(CONFIG_GPERFFLAGS)
 ## build
 ####
 .PHONY: all
-all: check_tools check_config $(lib) $(hostlib) $(bin) $(hostbin)
+all: check_tools check_config $(lib) $(bin)
 
 .PHONY: debug
 debug: cflags += -g
 debug: cxxflags += -g
 debug: asflags += -g
-debug: hostcflags += -g
-debug: hostcxxflags += -g
-debug: hostasflags += -g
 debug: all
 
 ####
@@ -65,19 +50,25 @@ clean:
 
 .PHONY: distclean
 distclean:
-	$(rm) $(config) $(built_tree)
+	$(rm) $(built_tree)
 
 ####
 ## install
 ####
 .PHONY: install-user
 install-user: all
+	$(mkdir) -p ~/bin
+	$(cp) -au built/main/avrfuser ~/bin/
 
 .PHONY: install-system
 install-system: all
+	$(mkdir) -p /usr/bin
+	$(cp) -au built/main/avrfuser /usr/bin/
 
 .PHONY: uninstall
 uninstall:
+	$(rm) -rf /usr/bin/avrfuser
+	$(rm) -rf ~/bin/avrfuser
 
 ####
 ## help
