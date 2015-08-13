@@ -70,11 +70,6 @@ endef
 define compile_lib_o
 	$(echo) [$(call upper_case,$(1))AR] $@
 	$($(1)ar) crs $@ $^
-
-    $(echo) [$(call upper_case,$(1))LD] $(basename $@).o
-    $($(1)ld) $(ldflags) -r $^ -o $(basename $@).o
-    $(echo) [$(call upper_case,$(1))AR] $@
-    $($(1)ar) crs $@ $(basename $@).o
 endef
 
 ifeq ($(project_type),c)
