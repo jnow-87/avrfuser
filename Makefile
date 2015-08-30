@@ -3,6 +3,7 @@
 ################
 
 # init source and built tree
+scripts_dir := scripts/
 default_built_tree := built/
 src_dirs := main/
 
@@ -10,7 +11,7 @@ src_dirs := main/
 project_type := cxx
 
 # include build system Makefile
-include scripts/Makefile.inc
+include $(scripts_dir)/Makefile.inc
 
 # init default flags
 cflags := $(CFLAGS)
