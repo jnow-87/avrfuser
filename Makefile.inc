@@ -175,11 +175,20 @@ ifneq ("$(mconfig)","")
 ifneq ("$(mconfig_ftype)","")
 mconfig_src := $(dir $(mconfig))
 mconfig := $(built_tree)/$(mconfig)
+genconfig := $(dir $(mconfig))genconfig
 
 .PHONY: menuconfig
-menuconfig: check_tools $(mconfig)
-	@$(mconfig) $(mconfig_ftype)
-	$(MAKE) clean
+menuconfig: check_tools $(mconfig) $(genconfig)
+	$(mconfig) $(mconfig_ftype)
+	$(mkdir) $(built_tree)/config/
+	$(call cmd_genconfig)
+
+.PHONY: genconfig
+genconfig: $(genconfig)
+	$(mkdir) $(built_tree)/config/
+	$(call cmd_genconfig)
+
+all: genconfig
 endif
 endif
 
