@@ -42,7 +42,7 @@ endef
 define compile_s_cxx
 	$(echo) [$(call upper_case,$(1))CXX] $@
 	$($(1)cxx) $($(1)cppflags) $($(1)archflags) -S $< -o $@
-	$($(1)cxx) $($(1)cppflags) $($(1)archflags) -MM -MF $@.d -MP -MT $@ $<
+	$($(1)cc) $($(1)cppflags) $($(1)archflags) -MM -MF $@.d -MP -MT $@ $<
 endef
 
 define compile_o_s
@@ -59,7 +59,7 @@ endef
 define compile_o_cxx
 	$(echo) [$(call upper_case,$(1))CXX] $@
 	$($(1)cxx) $($(1)cxxflags) $($(1)cflags) $($(1)cppflags) $($(1)archflags) -c $< -o $@
-	$($(1)cxx) $($(1)cppflags) $($(1)archflags) -MM -MF $@.d -MP -MT $@ $<
+	$($(1)cc) $($(1)cppflags) $($(1)archflags) -MM -MF $@.d -MP -MT $@ $<
 endef
 
 define compile_o_o
@@ -84,17 +84,8 @@ define compile_bin_o
 endef
 endif
 
-define cmd_genconfig
-	@if [ $$(diff -q $(config) $(config).old 1> /dev/null 2> /dev/null; echo $$?) -eq 1 ];then \
-		$(genconfig) $(mconfig_ftype) $(built_tree)/config/config.h $(built_tree)/config; \
-	elif [ ! -e $(built_tree)/config/config.h ];then \
-		$(genconfig) $(mconfig_ftype) $(built_tree)/config/config.h $(built_tree)/config; \
-	fi
-endef
-
 define cmd_defconfig
 	$(echo) [CP] $< '->' $(config)
 	@(test -e $(config) && cp $(config) $(config).old) ; return 0
 	$(cp) $< $(config)
-	$(call cmd_genconfig)
 endef

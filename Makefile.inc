@@ -141,10 +141,10 @@ sym_link := $(QUTIL)ln -s
 ###########################
 
 # fake target as default target
-.PHONY: fake_all
-fake_all: check_tools all
+.PHONY: all
+all: check_tools check_config
 
-# check of all tools are available
+# check if all tools are available
 check_tools_error := "please make sure that $${id} or CONFIG_$${id} is initialised correctly, current value is \"$${val}\""
 
 tools :=
@@ -170,25 +170,39 @@ ifneq ($(shell test -e $(config) && echo $(config)),$(config))
 	$(call error,$(config) does not exist, please run $$make menuconfig or $$make defconfig_<target> first)
 endif
 
-# menuconfig
-ifneq ("$(mconfig)","")
-ifneq ("$(mconfig_ftype)","")
-mconfig_src := $(dir $(mconfig))
-mconfig := $(built_tree)/$(mconfig)
-genconfig := $(dir $(mconfig))genconfig
+# config system targets
+ifeq ("$(use_config_sys)","y")
+ifneq ("$(config_ftype)","")
+config_header := $(built_tree)/config/config.h
+
+mconfig_src := $(scripts_dir)/mconf
+mconfig := $(built_tree)/$(mconfig_src)/mconfig
+confheader_src := $(scripts_dir)/mconf
+confheader := $(built_tree)/$(confheader_src)/confheader
+fixdep_src := $(scripts_dir)/fixdep
+fixdep := $(built_tree)/$(fixdep_src)/fixdep
+
+config_tools := $(fixdep) $(mconfig) $(confheader)
+
+mconfig := $(QBUILD)$(mconfig)
+confheader := $(QBUILD)$(confheader)
+fixdep := $(QBUILD)$(fixdep)
+
+.PHONY: configtools
+configtools: do_basic := y
+configtools: $(config_tools)
+
+.PHONY: check_configheader
+check_configheader: $(config_header)
+
+$(config_header): $(config) $(config_tools)
+	$(confheader) $(config_ftype) $(dir $(config_header)) $(config_header) 
 
 .PHONY: menuconfig
-menuconfig: check_tools $(mconfig) $(genconfig)
-	$(mconfig) $(mconfig_ftype)
-	$(mkdir) $(built_tree)/config/
-	$(call cmd_genconfig)
+menuconfig: check_tools configtools
+	$(mconfig) $(config_ftype)
 
-.PHONY: genconfig
-genconfig: $(genconfig)
-	$(mkdir) $(built_tree)/config/
-	$(call cmd_genconfig)
-
-all: genconfig
+all: configtools check_configheader
 endif
 endif
 
@@ -197,7 +211,7 @@ ifneq ("$(config_tree)","")
 config_files = $(notdir $(wildcard $(config_tree)/*))
 
 $(foreach cfg, $(config_files), \
-	$(call gen_rule_basic,cmd_defconfig,defconfig_$(cfg),$(config_tree)/$(cfg) $(genconfig)) \
+	$(call gen_rule_basic,cmd_defconfig,defconfig_$(cfg),$(config_tree)/$(cfg)) \
 )
 endif
 
@@ -282,7 +296,7 @@ help-buildsys:
 # start subdirectory traversal
 # 	if subdir-y is empty include '.' (within $(src_tree))
 $(if $(src_dirs), \
-	$(call dinclude,$(src_dirs) $(mconfig_src)) \
+	$(call dinclude,$(src_dirs) $(mconfig_src) $(fixdep_src) $(confheader_src)) \
 	, \
 	$(error $$(src_dirs) is empty, please define initial source directories) \
 )

@@ -34,7 +34,7 @@ gperfflags := $(GPERFFLAGS)
 ## build
 ####
 .PHONY: all
-all: check_tools check_config $(lib) $(bin)
+all: $(lib) $(bin)
 
 .PHONY: debug
 debug: cflags += -g
