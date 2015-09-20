@@ -18,7 +18,7 @@
 	unsigned int i; \
 	\
 	\
-	printf("usage: %s <mcu> <programmer>\n\n" \
+	printf("usage: %s <mcu> <programmer> <port>\n\n" \
 		   "    <mcu>\n" \
 		   , pname); \
 	\
@@ -27,8 +27,9 @@
 			printf("        %s\n", mcu_config::wordlist[i].name); \
 	} \
 	\
-	printf("\n    <programmer>\n" \
-		   "        check $avrdude -c ?\n" \
+	printf("\n" \
+		   "    <programmer>   check $avrdude -c ?\n" \
+		   "    <port>         port that the programmer is connected to the host, e.g. usb\n" \
 	); \
 }
 
@@ -39,18 +40,20 @@ static int ui(mcu_config_t* mcuc);
 
 int main(int argc, char** argv, char** env){
 char *programmer,
+	 *port,
 	 *mcu;
 	mcu_config_t* mcuc;
 
 
 	/* check arguments */
-	if(argc < 3 || (argc > 2 && strcmp(argv[1], "-h") == 0)){
+	if(argc < 4 || (argc > 2 && strcmp(argv[1], "-h") == 0)){
 		USAGE(argv[0]);
 		return 1;
 	}
 
 	mcu = argv[1];
 	programmer = argv[2];
+	port = argv[3];
 
 	/* get mcu config */
 	mcuc = (mcu_config_t*)mcu_config::lookup(mcu, strlen(mcu));
@@ -61,11 +64,11 @@ char *programmer,
 	}
 
 	/* main */
-	if(fuse_read(mcu, programmer, mcuc) != 0)
+	if(fuse_read(mcu, programmer, port, mcuc) != 0)
 		return 1;
 	
 	if(ui(mcuc) == 1){
-		if(fuse_write(mcu, programmer, mcuc) != 0)
+		if(fuse_write(mcu, programmer, port, mcuc) != 0)
 			return 1;
 	}
 

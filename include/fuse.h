@@ -45,8 +45,8 @@ extern fuse_t cksel0,
 
 
 /* prototypes */
-int fuse_read(const char* mcu, const char* programmer, mcu_config_t* mcuc);
-int fuse_write(const char* mcu, const char* programmer, mcu_config_t* mcuc);
+int fuse_read(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc);
+int fuse_write(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc);
 void hex_to_fuse(unsigned int value, fuse_t** fuse);
 unsigned int fuse_to_hex(fuse_t** fuse);
 

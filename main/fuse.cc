@@ -30,7 +30,7 @@ fuse_t reserved = { "RESERVED" };
 
 
 /* global functions */
-int fuse_read(const char* mcu, const char* programmer, mcu_config_t* mcuc){
+int fuse_read(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc){
 	char cmd[256];
 	unsigned int low,
 				  high,
@@ -39,7 +39,7 @@ int fuse_read(const char* mcu, const char* programmer, mcu_config_t* mcuc){
 
 
 	printf("reading fuses... ");
-	snprintf(cmd, 256, "avrdude -qq -p %s -c %s -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h", mcu, programmer);
+	snprintf(cmd, 256, "avrdude -qq -p %s -c %s -P %s -U lfuse:r:-:h -U hfuse:r:-:h -U efuse:r:-:h", mcu, programmer, port);
 
 	fp = popen(cmd, "r");
 
@@ -65,13 +65,13 @@ int fuse_read(const char* mcu, const char* programmer, mcu_config_t* mcuc){
 	return 0;
 }
 
-int fuse_write(const char* mcu, const char* programmer, mcu_config_t* mcuc){
+int fuse_write(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc){
 	char cmd[256];
 
 
 	printf("writing fuses... ");
 
-	snprintf(cmd, 256, "avrdude -qq -p %s -c %s -U lfuse:w:0x%x:m -U hfuse:w:0x%x:m -U efuse:w:0x%x:m", mcu, programmer, fuse_to_hex(mcuc->low), fuse_to_hex(mcuc->high), fuse_to_hex(mcuc->ext));
+	snprintf(cmd, 256, "avrdude -qq -p %s -c %s -P %s -U lfuse:w:0x%x:m -U hfuse:w:0x%x:m -U efuse:w:0x%x:m", mcu, programmer, port, fuse_to_hex(mcuc->low), fuse_to_hex(mcuc->high), fuse_to_hex(mcuc->ext));
 
 	if(system(cmd) != 0){
 		printf("\033\[31merror\033\[0m\n");
