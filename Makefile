@@ -2,9 +2,9 @@
 ###   init   ###
 ################
 
-# init source and built tree
+# init source and build tree
 scripts_dir := scripts
-default_built_tree := built/
+default_build_tree := build/
 src_dirs := main/
 
 # init build system variables
@@ -47,11 +47,11 @@ debug: all
 ####
 .PHONY: clean
 clean:
-	$(rm) $(filter-out $(built_tree)/$(scripts_dir),$(wildcard $(built_tree)/*))
+	$(rm) $(filter-out $(build_tree)/$(scripts_dir),$(wildcard $(build_tree)/*))
 
 .PHONY: distclean
 distclean:
-	$(rm) $(built_tree)
+	$(rm) $(build_tree)
 
 ####
 ## install
@@ -59,12 +59,12 @@ distclean:
 .PHONY: install-user
 install-user: all
 	$(mkdir) -p ~/bin
-	$(cp) -au built/main/avrfuser ~/bin/
+	$(cp) -au $(build_tree)/main/avrfuser ~/bin/
 
 .PHONY: install-system
 install-system: all
 	$(mkdir) -p /usr/bin
-	$(cp) -au built/main/avrfuser /usr/bin/
+	$(cp) -au $(build_tree)/main/avrfuser /usr/bin/
 
 .PHONY: uninstall
 uninstall:
