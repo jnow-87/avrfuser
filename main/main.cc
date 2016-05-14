@@ -35,14 +35,14 @@
 
 
 /* static prototypes */
-static int ui(mcu_config_t* mcuc);
+static int ui(mcu_config_t *mcuc);
 
 
-int main(int argc, char** argv, char** env){
+int main(int argc, char **argv, char **env){
 char *programmer,
 	 *port,
 	 *mcu;
-	mcu_config_t* mcuc;
+	mcu_config_t *mcuc;
 
 
 	/* check arguments */
@@ -77,7 +77,7 @@ char *programmer,
 
 
 /* local functions */
-int ui(mcu_config_t* mcuc){
+int ui(mcu_config_t *mcuc){
 	int r = 0;
 	unsigned int i,
 				 j,
@@ -89,7 +89,7 @@ int ui(mcu_config_t* mcuc){
 				 ncols,
 				 line = 0,
 				 col = 0;
-	fuse_t** fuse_lst;
+	fuse_t **fuse_lst;
 
 
 	/* init ncurses */

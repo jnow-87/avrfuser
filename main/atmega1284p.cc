@@ -1,7 +1,7 @@
 #include <fuse.h>
 
 
-fuse_t* atmega1284p_low[] = {
+fuse_t *atmega1284p_low[] = {
 	&cksel0,
 	&cksel1,
 	&cksel2,
@@ -13,7 +13,7 @@ fuse_t* atmega1284p_low[] = {
 	0
 };
 
-fuse_t* atmega1284p_high[] = {
+fuse_t *atmega1284p_high[] = {
 	&bootrst,
 	&bootsz0,
 	&bootsz1,
@@ -25,7 +25,7 @@ fuse_t* atmega1284p_high[] = {
 	0
 };
 
-fuse_t* atmega1284p_ext[] = {
+fuse_t *atmega1284p_ext[] = {
 	&bodlevel0,
 	&bodlevel1,
 	&bodlevel2,

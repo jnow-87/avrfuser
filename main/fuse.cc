@@ -30,12 +30,12 @@ fuse_t reserved = { "RESERVED" };
 
 
 /* global functions */
-int fuse_read(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc){
+int fuse_read(const char *mcu, const char *programmer, const char *port, mcu_config_t *mcuc){
 	char cmd[256];
 	unsigned int low,
 				  high,
 				  ext;
-	FILE* fp;
+	FILE *fp;
 
 
 	printf("reading fuses... ");
@@ -65,7 +65,7 @@ int fuse_read(const char* mcu, const char* programmer, const char* port, mcu_con
 	return 0;
 }
 
-int fuse_write(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc){
+int fuse_write(const char *mcu, const char *programmer, const char *port, mcu_config_t *mcuc){
 	char cmd[256];
 
 
@@ -83,7 +83,7 @@ int fuse_write(const char* mcu, const char* programmer, const char* port, mcu_co
 	return 0;
 }
 
-void hex_to_fuse(unsigned int value, fuse_t** fuse){
+void hex_to_fuse(unsigned int value, fuse_t **fuse){
 	unsigned int i;
 
 
@@ -91,7 +91,7 @@ void hex_to_fuse(unsigned int value, fuse_t** fuse){
 		fuse[i]->value = (value & (0x1 << i)) >> i;
 }
 
-unsigned int fuse_to_hex(fuse_t** fuse){
+unsigned int fuse_to_hex(fuse_t **fuse){
 	unsigned int i,
 				 v = 0;
 

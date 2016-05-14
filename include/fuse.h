@@ -4,14 +4,14 @@
 
 /* types */
 typedef struct{
-	const char* name;
+	const char *name;
 	int value;
 	unsigned int ui_x,
 				 ui_y;
 } fuse_t;
 
 struct mcu_config_t{
-	const char* name;
+	const char *name;
 
 	fuse_t **low,
 		   **high,
@@ -45,10 +45,10 @@ extern fuse_t cksel0,
 
 
 /* prototypes */
-int fuse_read(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc);
-int fuse_write(const char* mcu, const char* programmer, const char* port, mcu_config_t* mcuc);
-void hex_to_fuse(unsigned int value, fuse_t** fuse);
-unsigned int fuse_to_hex(fuse_t** fuse);
+int fuse_read(const char *mcu, const char *programmer, const char *port, mcu_config_t *mcuc);
+int fuse_write(const char *mcu, const char *programmer, const char *port, mcu_config_t *mcuc);
+void hex_to_fuse(unsigned int value, fuse_t **fuse);
+unsigned int fuse_to_hex(fuse_t **fuse);
 
 
 #endif // FUSE_H
