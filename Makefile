@@ -7,6 +7,7 @@ scripts_dir := scripts/build
 default_build_tree := build/
 src_dirs := main/
 use_config_sys := n
+githooks_tree := .githooks
 
 # init build system variables
 project_type := cxx
