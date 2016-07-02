@@ -66,7 +66,7 @@ char *programmer,
 	/* main */
 	if(fuse_read(mcu, programmer, port, mcuc) != 0)
 		return 1;
-	
+
 	if(ui(mcuc) == 1){
 		if(fuse_write(mcu, programmer, port, mcuc) != 0)
 			return 1;
@@ -121,7 +121,7 @@ int ui(mcu_config_t *mcuc){
 	for(j=0; mcuc->low[j]!=0; j++, i++)	fuse_lst[i] = mcuc->low[j];
 	for(j=0; mcuc->high[j]!=0; j++, i++)	fuse_lst[i] = mcuc->high[j];
 	for(j=0; mcuc->ext[j]!=0; j++, i++)	fuse_lst[i] = mcuc->ext[j];
-		
+
 	/* display static ui elements */
 	attron(A_BOLD | A_UNDERLINE);
 	mvprintw(FUSEBITS_Y_BASE, 0, "fuse bits");
