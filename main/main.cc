@@ -3,6 +3,7 @@
 #include <locale.h>
 #include <string.h>
 #include <curses.h>
+#include <version.h>
 #include <mcu.h>
 #include <mcu.hash.h>
 
@@ -31,6 +32,8 @@
 		   "    <programmer>   check $avrdude -c ?\n" \
 		   "    <port>         port that the programmer is connected to the host, e.g. usb\n" \
 	); \
+	\
+	printf("\nversion:\n" VERSION "\n"); \
 }
 
 

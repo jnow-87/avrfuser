@@ -18,7 +18,7 @@ include $(scripts_dir)/Makefile.inc
 # init default flags
 cflags := $(CFLAGS)
 cxxflags := $(CXXFLAGS)
-cppflags := $(CPPFLAGS) -I"include/" -Wall -O2
+cppflags := $(CPPFLAGS) -I"include/" -I"$(build_tree)/" -Wall -O2
 ldflags := $(LDFLAGS)
 ldrflags := $(LDRFLAGS)
 asflags := $(ASFLAGS)
