@@ -26,6 +26,8 @@ fuse_t ocden = { "OCDEN" };
 fuse_t bodlevel0 = { "BODLEVEL0" };
 fuse_t bodlevel1 = { "BODLEVEL1" };
 fuse_t bodlevel2 = { "BODLEVEL2" };
+fuse_t dwen = { "DWEN" };
+fuse_t rstdisbl = { "RSTDISBL" };
 fuse_t reserved = { "RESERVED" };
 
 

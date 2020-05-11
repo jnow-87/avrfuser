@@ -41,6 +41,8 @@ extern fuse_t cksel0,
 			  bodlevel0,
 			  bodlevel1,
 			  bodlevel2,
+			  dwen,
+			  rstdisbl,
 			  reserved;
 
 
