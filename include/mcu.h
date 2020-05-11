@@ -3,6 +3,7 @@
 
 
 #include <atmega1284p.h>
+#include <atmega88.h>
 
 
 #endif // MCU_H
