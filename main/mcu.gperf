@@ -29,4 +29,5 @@ struct mcu_config_t;
 %%
 # mcu			low byte			high byte			extended byte
 atmega1284p,	atmega1284p_low,	atmega1284p_high,	atmega1284p_ext
+atmega88,		atmega88_low,		atmega88_high,		atmega88_ext
 %%
