@@ -28,6 +28,7 @@ yaccflags := $(YACCFLAGS)
 lexflags := $(LEXFLAGS)
 gperfflags := $(GPERFFLAGS)
 
+
 ###################
 ###   targets   ###
 ###################
@@ -35,6 +36,7 @@ gperfflags := $(GPERFFLAGS)
 ####
 ## build
 ####
+
 .PHONY: all
 all: $(lib) $(bin)
 
@@ -47,6 +49,7 @@ debug: all
 ####
 ## cleanup
 ####
+
 .PHONY: clean
 clean:
 	$(rm) $(filter-out $(patsubst %/,%,$(dir $(build_tree)/$(scripts_dir))),$(wildcard $(build_tree)/*))
@@ -58,24 +61,13 @@ distclean:
 ####
 ## install
 ####
-.PHONY: install-user
-install-user: all
-	$(mkdir) -p ~/bin
-	$(cp) -au $(build_tree)/main/avrfuser ~/bin/
 
-.PHONY: install-system
-install-system: all
-	$(mkdir) -p /usr/bin
-	$(cp) -au $(build_tree)/main/avrfuser /usr/bin/
+include $(scripts_dir)/install.make
+
+.PHONY: install
+install: all
+	$(call install,$(build_tree)/main/avrfuser)
 
 .PHONY: uninstall
 uninstall:
-	$(rm) -rf /usr/bin/avrfuser
-	$(rm) -rf ~/bin/avrfuser
-
-####
-## help
-####
-
-.PHONY: help
-help:
+	$(call uninstall,$(PREFIX)/avrfuser)
