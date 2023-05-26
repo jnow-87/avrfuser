@@ -1,3 +1,12 @@
+/**
+ * Copyright (C) 2015 Jan Nowotsch
+ * Author Jan Nowotsch	<jan.nowotsch@gmail.com>
+ *
+ * Released under the terms of the GNU GPL v2.0
+ */
+
+
+
 #include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
@@ -14,16 +23,24 @@
 
 
 /* local prototypes */
-static int conf_write_confheader(const char *path);
+static int conf_write_confheader(char const *path);
 
 
 /* global functions */
 int main(int argc, char **argv){
+	size_t i;
+
+
 	/* check args */
 	if(argc < 4){
 		printf("usage: %s <Kconfig> <conf-header path> <config.h name>\n", argv[0]);
 		return 1;
 	}
+
+	i = strlen(argv[2]);
+
+	if(argv[2][i - 1] == '/')
+		argv[2][i - 1] = 0;
 
 	/* read Kconfig file */
 	conf_parse(argv[1]);
@@ -34,15 +51,15 @@ int main(int argc, char **argv){
 		return 1;
 	}
 
-	/* create config headers */
-	if(conf_write_confheader(argv[2])){
-		fprintf(stderr, "error creating config headers\n");
+	/* create config header */
+	if(conf_write_autoconf(argv[3])){
+		fprintf(stderr, "error writing config header \"%s\"\n", strerror(errno));
 		return 1;
 	}
 
-	/* create configureation header */
-	if(conf_write_autoconf(argv[3])){
-		fprintf(stderr, "error writing config header\n");
+	/* create header per CONFIG-option */
+	if(conf_write_confheader(argv[2])){
+		fprintf(stderr, "error creating config headers \"%s\"\n", strerror(errno));
 		return 1;
 	}
 
@@ -51,7 +68,7 @@ int main(int argc, char **argv){
 
 
 /* local functions */
-int conf_write_confheader(const char *path){
+int conf_write_confheader(char const *path){
 	char fname[strlen(path) + PATH_MAX + 1],
 		 b[PATH_MAX + 1],
 		 c;
@@ -65,9 +82,8 @@ int conf_write_confheader(const char *path){
 
 
 	strcpy(fname, path);
-
-	if(fname[plen - 1] != '/')
-		strcpy(fname + plen, "/");
+	strcpy(fname + plen, "/");
+	plen++;
 
 	for_all_symbols(i, sym){
 		if(sym->name == 0 || sym->type == S_UNKNOWN || sym->type  == S_OTHER)
