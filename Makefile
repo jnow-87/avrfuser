@@ -13,7 +13,7 @@ githooks_tree := .githooks
 project_type := cxx
 
 # include build system Makefile
-include $(scripts_dir)/Makefile.inc
+include $(scripts_dir)/main.make
 
 # init default flags
 cflags := $(CFLAGS)
