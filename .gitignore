@@ -1,6 +1,7 @@
 *.d
 *.o
 *.elf
+.clang
 config
 config.old
 build/
